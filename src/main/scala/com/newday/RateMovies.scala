@@ -5,7 +5,7 @@ import org.apache.spark.sql.{AnalysisException, SparkSession}
 
 import scala.util.Failure
 
-class MovieRating() {
+class MovieRating {
 
   //create spark session
   private val spark = SparkSession
@@ -33,16 +33,18 @@ class MovieRating() {
 
       import spark.implicits._
 
-      val movieDF = spark.sqlContext.read
+      var movieDF = spark.sqlContext.read
         .schema(movieSchema)
         .option("delimiter", "\t")
         .csv(spark.sqlContext.read.textFile("s3a://nd-movielens/movies.dat")
           .map(line => line.split("\\:\\:").mkString("\t")))
 
-      val ratingDF = spark.sqlContext.read
+      movieDF.show()
+
+      var ratingDF = spark.sqlContext.read
         .schema(ratingSchema)
         .option("delimiter", "\t")
-        .csv(spark.sqlContext.read.textFile("s3a://nd-movielens/movies.dat")
+        .csv(spark.sqlContext.read.textFile("s3a://nd-movielens/ratings.dat")
           .map(line => line.split("\\:\\:").mkString("\t")))
 
       import org.apache.spark.sql.functions._
