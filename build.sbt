@@ -10,9 +10,10 @@ libraryDependencies ++= Seq(
   "org.apache.hadoop" % "hadoop-aws" % "2.8.5"
 )
 
-//mergeStrategy in assembly <<= (mergeStrategy in assembly) { (old) =>
-//{
-//  case PathList("META-INF", xs @ _*) => MergeStrategy.discard
-//  case x => MergeStrategy.first
-//}
-//}
+mainClass in assembly := some("com.newday.RateMovies")
+assemblyJarName := "ratemovies.jar"
+
+assemblyMergeStrategy in assembly := {
+  case PathList("META-INF", xs @ _*) => MergeStrategy.discard
+  case x => MergeStrategy.first
+}
